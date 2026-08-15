@@ -1,24 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Pruebas - ReqRes API', () => {
+test.describe('Pruebas - ReqRes API Privada', () => {
+  // Leemos la API Key desde las variables de entorno de GitHub Actions o local
+  const apiKey = process.env.REQRES_API_KEY || 'TU_API_KEY_LOCAL';
+  const BASE_URL = 'https://bright-grove-api-187.reqres.in/api';
 
-  test('POST /api/users - Crear usuario', async ({ request }) => {
-    const response = await request.post('https://reqres.in/api/users', {
-      data: {
-        name: 'MariaLucianaDiaz',
-        job: 'QA Engineer'
-      }
+  test('GET /users - Obtener usuarios con autenticación', async ({ request }) => {
+    const response = await request.get(`${BASE_URL}/users`, {
+      headers: {
+        'x-api-key': apiKey,
+      },
     });
 
-    // Acepta 201 (Creado) o 401 si ReqRes requiere autenticación
-    expect([201, 401]).toContain(response.status());
+    expect(response.status()).toBe(200);
   });
-
-  test('GET /api/users - Obtener lista de usuarios', async ({ request }) => {
-    const response = await request.get('https://reqres.in/api/users?page=1');
-
-    // Acepta 200 (OK) o 401 si ReqRes requiere autenticación
-    expect([200, 401]).toContain(response.status());
-  });
-
 });
