@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout del código
+    - name: Checkout del codigo
       uses: actions/checkout@v4
 
     - name: Configurar Node.js
@@ -56,5 +56,15 @@ jobs:
         path: k6-results.json
         retention-days: 30
 
-        env:
+        
+    - name: Iniciar API propia
+      run: npm run start:api &
+
+    - name: Esperar a que la API este lista
+      run: npx wait-on http://localhost:3000/users
+
+    - name: Ejecutar pruebas de Playwright
+      run: npx playwright test
+env:
   REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+    

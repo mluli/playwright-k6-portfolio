@@ -1,17 +1,28 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Pruebas de escritura - JSONPlaceholder', () => {
-  test('Crear una nueva publicación (POST)', async ({ request }) => {
-    const response = await request.post('https://jsonplaceholder.typicode.com/posts', {
+test.describe('Pruebas - JSONPlaceholder API', () => {
+
+  test('POST /users - Crear usuario', async ({ request }) => {
+    const response = await request.post('https://jsonplaceholder.typicode.com/users', {
       data: {
-        title: 'Mi test de Playwright',
-        body: 'Contenido de prueba',
-        userId: 1
+        name: 'QA Tester',
+        username: 'qatester',
+        email: 'qa@example.com'
       }
     });
 
     expect(response.status()).toBe(201);
+    
     const body = await response.json();
     expect(body).toHaveProperty('id');
   });
+
+  test('GET /users - Validar lista de usuarios', async ({ request }) => {
+    const response = await request.get('https://jsonplaceholder.typicode.com/users');
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(Array.isArray(body)).toBeTruthy();
+  });
+
 });
