@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-and-performance:
-    timeout-minutes: 60
+    timeout-minutes: 10
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +23,18 @@ jobs:
     - name: Instalar dependencias
       run: npm ci
 
+    - name: Iniciar API propia (JSON Server)
+      run: |
+        npx json-server --watch db.json --port 3000 &
+        npx wait-on http://localhost:3000/users
+
     - name: Instalar navegadores de Playwright
       run: npx playwright install --with-deps
 
     - name: Ejecutar pruebas de API y E2E
       run: npx playwright test
+      env:
+        REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
 
     - name: Guardar reporte de Playwright
       uses: actions/upload-artifact@v4
@@ -55,16 +62,3 @@ jobs:
         name: k6-performance-report
         path: k6-results.json
         retention-days: 30
-
-        
-    - name: Iniciar API propia
-      run: npm run start:api &
-
-    - name: Esperar a que la API este lista
-      run: npx wait-on http://localhost:3000/users
-
-    - name: Ejecutar pruebas de Playwright
-      run: npx playwright test
-env:
-  REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
-    
