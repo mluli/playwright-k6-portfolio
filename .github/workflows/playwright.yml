@@ -55,3 +55,6 @@ jobs:
         name: k6-performance-report
         path: k6-results.json
         retention-days: 30
+
+        env:
+  REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
