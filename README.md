@@ -79,6 +79,6 @@ The GitHub Actions workflow runs automatically on every push or pull_request to 
 María Luciana Diaz
 QA / QC Engineer | Test Automation Specialist
 
-* LinkedIn: [https://www.linkedin.com/in/marialucianadiaz](https://www.google.com/searcq=https://www.linkedin.com/in/marialucianadiaz)[cite: 1]
-* GitHub: [https://github.com/mluli](https://www.google.com/search?q=https://github.com/mluli)[cite: 1]
-* Certifications: ISTQB® Certified Tester Foundation Level[cite: 1]
+* LinkedIn: [https://www.linkedin.com/in/marialucianadiaz](https://www.google.com/searcq=https://www.linkedin.com/in/marialucianadiaz)
+* GitHub: [https://github.com/mluli](https://www.google.com/search?q=https://github.com/mluli)
+* Certifications: ISTQB® Certified Tester Foundation Level
