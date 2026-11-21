@@ -1,84 +1,70 @@
-# Advanced QA Automation & Performance Testing Suite
+# Playwright + k6 Portfolio
 
-This repository demonstrates a production-grade QA Automation and Performance testing framework. It features automated End-to-End (E2E) API testing, schema validations, and load testing integrated directly into a GitHub Actions CI/CD pipeline.
+Proyecto de portfolio QA que combina **pruebas de API con Playwright (TypeScript)** y **pruebas de carga con k6**, ejecutadas en **GitHub Actions**.
 
----
+## Alcance
 
-## Tech Stack & Architecture
+Proyecto de práctica contra APIs públicas y una API local (`json-server`). No incluye pruebas de UI; las pruebas de interfaz están en el repositorio `qa-automation-portfolio`.
 
-* E2E & API Automation: Playwright (TypeScript)
-* Performance & Load Testing: k6 (JavaScript)
-* CI/CD Integration: GitHub Actions (Ubuntu Runners)
-* Target APIs: PokeAPI & ReqRes REST API
-* Reporting: Playwright HTML Reporter & k6 JSON Artifacts
+## Qué cubre
 
-playwright-k6-portfolio/
-├── .github/
-│   └── workflows/
-│       └── playwright.yml      # CI/CD Pipeline Configuration
-├── tests/
-│   ├── api-pokeapi.spec.ts     # PokeAPI Tests & Response Validations
-│   ├── api-reqres.spec.ts      # ReqRes CRUD & Schema Tests
-│   └── performance/
-│       └── load-test.js        # k6 Load & Stress Testing Script
-├── package.json
-└── playwright.config.ts        # Playwright Test Runner Config
+### Pruebas de API (Playwright)
 
----
+| Archivo | API | Qué valida |
+|---|---|---|
+| `api-jsonplaceholder.spec.ts` | JSONPlaceholder | Peticiones a la API pública de JSONPlaceholder |
+| `api-pokemon.spec.ts` | PokeAPI | Status 200, datos del recurso `ditto` y lista con `limit=10` |
+| `api-users.spec.ts` | ReqRes | Creación de usuario (201) y lista de usuarios (200) |
+| `api-reqres.spec.ts` | ReqRes con API key | GET de usuarios autenticado con el header `x-api-key` (200) |
+| `api-local.spec.ts` | API propia (`json-server`) | GET y POST sobre `/users` |
 
-## Test Suite Breakdown
+### Pruebas de rendimiento (k6)
 
-### 1. API Integration & Functional Testing (Playwright)
+- Archivo: `tests/performance/load-test.js`
+- Escenario: sube a 10 usuarios virtuales en 10 s, los mantiene 20 s y baja a 0 en 10 s.
+- Umbral (threshold): el 95 % de las peticiones responde en menos de 800 ms (`p(95) < 800`).
+- Check: status 200 en `GET https://reqres.in/api/users?page=1`.
 
-* PokeAPI (api-pokeapi.spec.ts): Validates Pokemon endpoint data integrity, HTTP 200 status codes, and JSON response payload structure.
-* ReqRes (api-reqres.spec.ts): Validates CRUD operations, status code verifications (200 OK, 201 Created), and execution timing.
+## Tecnologías
 
-### 2. Performance & Load Testing (k6)
+Playwright · TypeScript · Node.js · k6 · json-server · GitHub Actions
 
-* Ramp-up Scenario: Simulates up to 10 Virtual Users (VUs).
-* Threshold Policy: Enforces that 95% of API requests complete in < 1500ms (p(95) < 1500).
-* Pass/Fail Criteria: Zero error rate toleration on critical endpoints.
+## Cómo ejecutarlo
 
----
+Requisitos: Node.js (LTS) y k6 instalado para la prueba de carga.
 
-## Local Setup & Execution
-
-### Prerequisites
-
-* Node.js (v18 or higher)
-* npm (v9 or higher)
-
-### Installation
-
-git clone [https://github.com/mluli/playwright-k6-portfolio.git]
+```bash
+git clone https://github.com/mluli/playwright-k6-portfolio.git
 cd playwright-k6-portfolio
-npm install
+npm ci
 npx playwright install --with-deps
 
-### Running Tests Locally
+# 1) Levantar la API propia (en otra terminal)
+npm run start:api
 
+# 2) Pruebas de API
 npx playwright test
 npx playwright show-report
+
+# 3) Prueba de carga
 k6 run tests/performance/load-test.js
+```
 
----
+El test `api-reqres.spec.ts` necesita una API key en la variable de entorno `REQRES_API_KEY` (por ejemplo, `export REQRES_API_KEY=tu_clave`). Sin ella, ese test falla. En CI se lee desde los secrets del repositorio.
 
-## CI/CD Pipeline Workflow
+## Pipeline de CI
 
-The GitHub Actions workflow runs automatically on every push or pull_request to the main branch:
+El workflow `.github/workflows/playwright.yml` se ejecuta en cada push y pull request a `main` o `master`:
 
-1. Environment Provisioning: Provisions an ubuntu-latest runner with Node.js LTS.
-2. Playwright Execution: Installs dependencies, runs headless API tests, and generates HTML reports.
-3. k6 Installation & Load Test: Installs k6 dynamically, executes load tests against target endpoints, and outputs metrics.
-4. Artifact Retention: Uploads execution logs and visual HTML reports as downloadable artifacts stored for 30 days.
+1. Descarga el código y configura Node.js (LTS).
+2. Instala dependencias con `npm ci`.
+3. Levanta la API propia con `json-server`.
+4. Instala los navegadores de Playwright.
+5. Ejecuta las pruebas de Playwright.
+6. Guarda el reporte HTML como artefacto (30 días).
+7. Instala k6 y ejecuta la prueba de carga, con salida JSON.
+8. Guarda los resultados de k6 como artefacto.
 
----
+## Autora
 
-## Author
-
-María Luciana Diaz
-QA / QC Engineer | Test Automation Specialist
-
-* LinkedIn: [https://www.linkedin.com/in/marialucianadiaz](https://www.google.com/searcq=https://www.linkedin.com/in/marialucianadiaz)
-* GitHub: [https://github.com/mluli](https://www.google.com/search?q=https://github.com/mluli)
-* Certifications: ISTQB® Certified Tester Foundation Level
+Luciana Diaz · QA Engineer · [LinkedIn](https://www.linkedin.com/in/marialucianadiaz/)
