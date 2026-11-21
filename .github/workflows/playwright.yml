@@ -1,8 +1,3 @@
-name: Iniciar API propia (JSON Server)
-run: |
-      npx json-server --watch db.json --port 3000 &
-      npx wait-on -t 30000 http-get://127.0.0.1:3000/users
-          
 name: CI/CD Pipeline - API, E2E & Performance Tests
 
 on:
