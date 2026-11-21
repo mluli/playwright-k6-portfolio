@@ -15,7 +15,7 @@ Proyecto de práctica contra APIs públicas y una API local (`json-server`). No 
 | `api-jsonplaceholder.spec.ts` | JSONPlaceholder | Peticiones a la API pública de JSONPlaceholder |
 | `api-pokemon.spec.ts` | PokeAPI | Status 200, datos del recurso `ditto` y lista con `limit=10` |
 | `api-users.spec.ts` | ReqRes | Creación de usuario (201) y lista de usuarios (200) |
-| `api-reqres.spec.ts` | ReqRes con API key | GET de usuarios autenticado con el header `x-api-key` (200) |
+| `api-reqres.spec.ts` | ReqRes con API key | GET de `products` autenticado con el header `x-api-key` (200) |
 | `api-local.spec.ts` | API propia (`json-server`) | GET y POST sobre `/users` |
 
 ### Pruebas de rendimiento (k6)
