@@ -13,6 +13,12 @@ test.describe('Pruebas - ReqRes API Privada', () => {
       },
     });
 
+    // Diagnóstico: si no responde 200, mostramos el motivo en el log de CI
+    if (response.status() !== 200) {
+      const body = await response.text();
+      console.log(`Status ${response.status()}: ${body.slice(0, 300)}`);
+    }
+
     expect(response.status()).toBe(200);
   });
 });
