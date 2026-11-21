@@ -26,7 +26,7 @@ jobs:
     - name: Iniciar API propia (JSON Server)
       run: |
         npx json-server --watch db.json --port 3000 &
-        npx wait-on http://localhost:3000/users
+        npx wait-on -t 30000 http-get://127.0.0.1:3000/users
 
     - name: Instalar navegadores de Playwright
       run: npx playwright install --with-deps
