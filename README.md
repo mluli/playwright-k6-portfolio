@@ -1,5 +1,7 @@
 # Playwright + k6 Portfolio
 
+![CI](https://github.com/mluli/playwright-k6-portfolio/actions/workflows/playwright.yml/badge.svg)
+
 Proyecto de portfolio QA que combina **pruebas de API con Playwright (TypeScript)** y **pruebas de carga con k6**, ejecutadas en **GitHub Actions**.
 
 ## Alcance
