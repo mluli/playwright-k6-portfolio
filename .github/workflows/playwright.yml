@@ -1,5 +1,4 @@
 name: CI/CD Pipeline - API, E2E & Performance Tests
-
 on:
   push:
     branches: [ main, master ]
